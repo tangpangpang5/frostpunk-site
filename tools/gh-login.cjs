@@ -3,10 +3,11 @@ const CLIENT = 'Iv1.b507a08c87ecfe98';
 const fs = require('node:fs');
 
 async function post(url, body) {
+  const form = new URLSearchParams(body).toString();
   const res = await fetch(url, {
     method: 'POST',
-    headers: { accept: 'application/json', 'content-type': 'application/json' },
-    body: JSON.stringify(body),
+    headers: { accept: 'application/json', 'content-type': 'application/x-www-form-urlencoded' },
+    body: form,
   });
   return res.json();
 }
@@ -21,6 +22,7 @@ async function post(url, body) {
     process.exit(1);
   }
   console.log('CODE=' + start.user_code);
+  console.log('SCOPE=' + (start.scope || '(none)'));
   console.log('URL=' + start.verification_uri);
   const deadline = Date.now() + (start.expires_in ?? 900) * 1000;
   while (Date.now() < deadline) {
