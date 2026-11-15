@@ -9,3 +9,6 @@ Thumbs.db
 # 版权音轨不进公开仓库；本地放 public/audio/*.mp3 即可播放
 public/audio/*.mp3
 shots/
+
+# 本机 token / 设备码登录脚本产物
+.gh-token
