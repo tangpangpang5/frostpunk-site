@@ -99,3 +99,31 @@ Chrome / Edge 120+、Safari 17+、Firefox 121+。用到 `color-mix()`、`clip-pa
 评审包：`docs/gemini-review.md`（可整段粘给 Gemini，附三张截图）。
 
 截图注意：headless Chrome 整页/遮罩渲染会在纹理上留接缝，那是截图伪影，真实浏览器（bsk 会话）已验证无接缝。
+
+## 部署（GitHub → Cloudflare Pages）
+
+仓库：`tangpangpang5/frostpunk-site`（public）。源码 38 个文件、约 400KB；`dist/`、`node_modules/`、`shots/`、
+`public/audio/*.mp3` 都不入库。
+
+Cloudflare Pages 连接 Git 时填：
+
+| 项 | 值 |
+| --- | --- |
+| Framework preset | Astro |
+| Build command | `npm run build` |
+| Build output directory | `dist` |
+| 环境变量 | `NODE_VERSION=22`（仓库里的 `.nvmrc` 也写了 22） |
+
+> 首次构建若报 `npm install` 的 peer 警告，不用管；本地验证用的是
+> `npm install --ignore-scripts --no-audit --no-fund`，CI 里带脚本执行是正常的。
+
+## 音频与版权
+
+`public/audio/` 下放的是从本地 Steam 音轨拷来的三首 OST，**已被 `.gitignore` 排除**，不会进公开仓库，
+所以线上站点的播放键只会改界面状态、不出声。要在线上听，二选一：
+
+- 接受版权风险：删掉 `.gitignore` 里 `public/audio/*.mp3` 那行，再提交音轨；
+- 换免版权音源：把 `src/data/site.ts` 里 `PLAYLIST[].src` 指向自己的 CC0/CC-BY 文件。
+
+播放器逻辑在 `src/scripts/site.ts` 的 `#ost` 分支：点曲目行 → 设置 `src` → `play()`；
+被浏览器自动播放策略拦住时静默失败，等用户点播放键。
