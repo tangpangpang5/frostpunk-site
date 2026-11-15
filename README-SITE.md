@@ -2,6 +2,8 @@
 
 一个把 Frostpunk 的界面语言搬进真实技术博客的 Astro 站点：一台能量塔，五个子域，两个纪元。
 
+线上：https://frostpunk-site.pages.dev · 仓库：https://github.com/tangpangpang5/frostpunk-site
+
 - **五个路由**：`/`（主控台 core）、`/telemetry/`（遥测）、`/archive/`（档案）、`/foundry/`（工坊）、`/acoustic/`（声学）
 - **两个纪元**：`data-era="1886"`（暗黑煤烟 / 黄铜 / 泼墨）与 `data-era="1920"`（白霜磨砂纸 / `§` / 金色裂缝），HUD 右上旋钮全站切换
 - **零位图**：护目镜、派系徽记、研究树、冻原地形、热力图、书架全部是 SVG / CSS 程序生成，仓库里没有一张图片资源
