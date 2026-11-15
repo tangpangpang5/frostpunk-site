@@ -1,0 +1,66 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  items?: { id: string; label: string }[];
+  sector?: string;
+}
+
+const { items = [], sector = 'SECTOR 07' } = Astro.props;
+---
+
+<aside class="rail" aria-label="页内锚点">
+  <div class="rail__group">
+    <span class="rail__label">INDEX</span>
+    {
+      items.map((item, i) => (
+        <a class="rail__dot" href={`#${item.id}`} data-anchor={item.id} aria-label={item.label}>
+          <span class="rail__tip">
+            {String(i + 1).padStart(2, '0')} · {item.label}
+          </span>
+        </a>
+      ))
+    }
+  </div>
+
+  <div class="rail__bottom">
+    <span class="rail__vert">{sector} · 60.72°N</span>
+    <button class="rail__dot rail__dot--icon" type="button" id="to-top" aria-label="回到顶部">
+      <Icon name="arrow" size={14} />
+      <span class="rail__tip">回到顶部</span>
+    </button>
+  </div>
+</aside>
+
+<style>
+  .rail__dot--icon::before {
+    display: none;
+  }
+  .rail__dot--icon svg {
+    transform: rotate(-90deg);
+  }
+</style>
+
+<script>
+  const dots = Array.from(document.querySelectorAll<HTMLElement>('[data-anchor]'));
+  if (dots.length) {
+    const targets = dots
+      .map((dot) => document.getElementById(dot.dataset.anchor ?? ''))
+      .filter((el): el is HTMLElement => Boolean(el));
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          dots.forEach((d) => d.classList.toggle('is-active', d.dataset.anchor === entry.target.id));
+        }
+      },
+      { rootMargin: '-45% 0px -50% 0px', threshold: 0 },
+    );
+    targets.forEach((t) => io.observe(t));
+
+    document.getElementById('to-top')?.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+</script>

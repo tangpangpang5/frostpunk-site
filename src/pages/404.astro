@@ -1,0 +1,62 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="失联" description="该频道已失联，请返回主控频道。" index="404">
+  <section class="lost">
+    <p class="page-head__index">SIGNAL LOST</p>
+    <h1>404<span>频道失联</span></h1>
+    <p class="lead">
+      这台终端没有接收过这个频率。可能是线路被冻住了，也可能是地址写错了一个字符。
+    </p>
+    <div class="lost__actions">
+      <a class="btn btn--solid" href="/">返回主控</a>
+      <a class="btn btn--ghost" href="/telemetry/">查看遥测</a>
+    </div>
+    <p class="mono lost__code">ERR 404 · NEW LONDON TERMINAL 07 · W241</p>
+  </section>
+</BaseLayout>
+
+<style>
+  .lost {
+    min-height: 62vh;
+    display: grid;
+    place-content: center;
+    justify-items: start;
+    gap: 18px;
+    max-width: 640px;
+    padding: 60px 0;
+  }
+
+  .lost h1 {
+    font-family: var(--font-display);
+    font-size: clamp(64px, 12vw, 132px);
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+    color: var(--text-strong);
+    text-transform: uppercase;
+  }
+
+  .lost h1 span {
+    display: block;
+    margin-top: 10px;
+    font-family: var(--font-serif);
+    font-size: clamp(15px, 2vw, 20px);
+    letter-spacing: 0.5em;
+    color: var(--brass);
+  }
+
+  .lost__actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+
+  .lost__code {
+    margin-top: 16px;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--text-faint);
+  }
+</style>

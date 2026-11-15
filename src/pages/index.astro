@@ -1,0 +1,427 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Goggle from '../components/Goggle.astro';
+import Portrait from '../components/Portrait.astro';
+import Sheets from '../components/Sheets.astro';
+import Icon from '../components/Icon.astro';
+import { SITE, ETHOS, TRAITS, BOOKS, PROJECTS, TIMELINE, STATS } from '../data/site';
+
+const sections = [
+  { id: 'profile', label: '派系' },
+  { id: 'status', label: '状态' },
+  { id: 'shelf', label: '书架' },
+  { id: 'work', label: '工坊' },
+  { id: 'contact', label: '联络' },
+];
+
+const spines = ['#5a3b2a', '#2f3d44', '#7a2f24', '#3f4a3a', '#4a3550', '#6b4a22', '#243038'];
+const spineInk = ['#e3cba6', '#c9d8de', '#f0cdb4', '#d5dcc4', '#d9c6e0', '#efd9a8', '#cfdae1'];
+const heights = ['88%', '74%', '94%', '80%', '86%', '70%', '82%'];
+const widths = ['116px', '88px', '126px', '96px', '108px', '92px', '120px'];
+
+const bookRows = [BOOKS.slice(0, 4), BOOKS.slice(4)];
+const featured = PROJECTS.filter((p) => p.open).slice(0, 3);
+const years = new Date().getFullYear() - Number(SITE.startDate.slice(0, 4));
+
+const tickerItems = [
+  'GENERATOR ONLINE · 供暖效率 126%',
+  `正在读 · ${BOOKS.find((b) => b.status === '在读')?.title ?? '—'}`,
+  `站点年龄 · ${years} 年`,
+  '最近提交 · 3 小时前',
+  `外部温度 · -30°C`,
+  '当前曲目 · The City Must Survive',
+  '能量塔 · 无异常',
+  `周期 · W${STATS.weeks}`,
+];
+---
+
+<BaseLayout title="主控台" description={SITE.slogan} sections={sections} index="CORE-01">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero__ink" aria-hidden="true"></div>
+
+    <div class="hero__copy">
+      <p class="hero__eyebrow">PERSONAL TERMINAL · 60.72°N 08°E</p>
+      <h1 class="hero__name">
+        顾寒
+        <small>GU HAN</small>
+      </h1>
+
+      <p class="hero__slogan" set:html={SITE.slogan.replace('，', '，<br />')} />
+      <p class="hero__role">{SITE.role} · {SITE.status}</p>
+
+      <p class="hero__now">
+        在读《{BOOKS.find((b) => b.status === '在读')?.title ?? '—'}》 · 最近提交 3 小时前 · 外面 -30°C
+      </p>
+
+      <p class="hero__cta">
+        <a class="hero__go" href="/foundry">进入工坊 <Icon name="arrow" size={14} /></a>
+        <a class="hero__go hero__go--quiet" href="/archive">翻阅档案</a>
+      </p>
+
+      <dl class="hero__spec">
+        <div><dt>镜片编号</dt><dd>07</dd></div>
+        <div><dt>焦距 / 视野</dt><dd>1.6 · 48°</dd></div>
+        <div><dt>镜内温度</dt><dd>842<small>°C</small></dd></div>
+        <div><dt>当前周期</dt><dd>W241</dd></div>
+        <div><dt>供暖效率</dt><dd>126<small>%</small></dd></div>
+        <div><dt>站内在线</dt><dd>8<small>年</small></dd></div>
+      </dl>
+    </div>
+
+    <div class="hero__visual">
+      <Goggle />
+    </div>
+
+    <a class="hero__scroll" href="#profile">向下滚动</a>
+  </section>
+
+  <!-- TICKER -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker__track">
+      {[0, 1].map((n) =>
+        tickerItems.map((item) => (
+          <span class="ticker__item" data-key={n}>
+            {item}
+          </span>
+        )),
+      )}
+    </div>
+  </div>
+
+  <!-- PROFILE -->
+  <section class="section" id="profile">
+    <div class="section__head reveal">
+      <h2 class="section__title">
+        派系
+        <em>FACTION · THE ENGINEERS</em>
+      </h2>
+      <p class="section__aside">
+        立场 · 进步 / 择优 / 理性<br />
+        阵营 · 秩序卫士<br />
+        支持率 · 7% 的人口
+      </p>
+    </div>
+
+    <div class="profile">
+      <div class="reveal">
+        <h3 class="profile__col-title">派系时代精神 <span>ETHOS</span></h3>
+        <div class="ethos">
+          {
+            ETHOS.map((item) => (
+              <article class="ethos__item">
+                <span class="ethos__icon">
+                  <Icon name={item.icon as 'gear'} />
+                </span>
+                <div>
+                  <h4 class="ethos__key">
+                    {item.key}
+                    <em>{item.en}</em>
+                  </h4>
+                  <p class="ethos__line">{item.line}</p>
+                  <p class="ethos__line" style="opacity:.75">{item.body}</p>
+                  <span class="ethos__law">{item.law}</span>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+
+      <div class="portrait reveal" data-delay="1">
+        <div class="portrait__frame">
+          <Portrait />
+        </div>
+        <div class="portrait__name">
+          <b>{SITE.author}</b>
+          <small>GU HAN · {SITE.role}</small>
+        </div>
+        <p class="mono" style="font-size:9px;letter-spacing:.18em;color:var(--text-faint);text-align:center">
+          档案编号 NL-07-1886 · 火种编号 0731
+        </p>
+      </div>
+
+      <div class="reveal" data-delay="2">
+        <h3 class="profile__col-title">特质 <span>TRAITS</span></h3>
+        <div class="traits">
+          {
+            TRAITS.map((t) => (
+              <div class="traits__item">
+                <b>{t.key}</b>
+                <p>{t.body}</p>
+              </div>
+            ))
+          }
+        </div>
+
+        <div class="clipping" style="margin-top:26px">
+          <p class="clipping__tag">良好关系加成</p>
+          <p class="clipping__quote">“{SITE.manifesto}”</p>
+          <p class="clipping__by">— 致所有在零度里维护系统的人</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATUS -->
+  <section class="section" id="status">
+    <div class="section__head reveal">
+      <h2 class="section__title">
+        运行状态
+        <em>TELEMETRY · GENERATOR LOG</em>
+      </h2>
+      <p class="section__aside">
+        数据源 · GitHub / 本地日志<br />
+        采样 · 每日 06:00<br />
+        延迟 · 约 4 分钟
+      </p>
+    </div>
+
+    <div class="grid-4 reveal" style="margin-bottom:clamp(28px,4vw,52px)">
+      <div class="stat stat--lead">
+        <p class="stat__label">贡献提交 <Icon name="bolt" size={12} /></p>
+        <p class="stat__value">{STATS.commits.toLocaleString()}</p>
+        <p class="stat__note">过去 12 个月的总体积，折算成热量。</p>
+      </div>
+      <div class="stat">
+        <p class="stat__label">连续供暖 <Icon name="flame" size={12} /></p>
+        <p class="stat__value">{STATS.streak}<span>天</span></p>
+        <p class="stat__note">炉子没灭过的连续天数。</p>
+      </div>
+      <div class="stat">
+        <p class="stat__label">仓库数量 <Icon name="layers" size={12} /></p>
+        <p class="stat__value">{STATS.repos}</p>
+        <p class="stat__note">其中 9 个仍在持续维护。</p>
+      </div>
+      <div class="stat">
+        <p class="stat__label">供暖效率 <Icon name="target" size={12} /></p>
+        <p class="stat__value">{STATS.efficiency}<span>%</span></p>
+        <p class="stat__note">超过设计阈值 26%，尚未过载。</p>
+      </div>
+    </div>
+
+    <div class="split">
+      <div class="reveal">
+        <h3 class="profile__col-title">大事记 <span>TIMELINE</span></h3>
+        <div class="timeline">
+          {
+            TIMELINE.map((item) => (
+              <div class="timeline__item">
+                <span class="timeline__year">{item.year}</span>
+                <p class="timeline__text">{item.text}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+
+      <div class="reveal" data-delay="1">
+        <div class="plate">
+          <div class="plate__body">
+            <p class="kicker">当前状态 / CURRENT STATUS</p>
+            <p class="lead" style="margin-top:14px">
+              正在把五个子域合并成一台机器：共享拓扑、共享令牌、共享一套闸门动效。
+            </p>
+            <div class="meter meter--seg" style="margin:24px 0 10px">
+              <i class="meter__fill meter__fill--hot" style="width:72%"></i>
+            </div>
+            <div class="mono" style="display:flex;justify-content:space-between;font-size:9px;letter-spacing:.16em;color:var(--text-faint)">
+              <span>PROGRESS 72%</span>
+              <span>剩余 3 个子域</span>
+            </div>
+
+            <hr class="rule" style="margin:22px 0" />
+
+            <ul class="mono" style="display:grid;gap:9px;font-size:10px;letter-spacing:.08em;color:var(--text-dim)">
+              <li>▸ 主控台 · 已完成</li>
+              <li>▸ 遥测 · 已完成</li>
+              <li>▸ 档案 / 工坊 / 声学 · 进行中</li>
+              <li>▸ 部署 · 待接入 Cloudflare</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHELF -->
+  <section class="section" id="shelf">
+    <div class="section__head reveal">
+      <h2 class="section__title">
+        书架
+        <em>ARCHIVE · READ &amp; UNREAD</em>
+      </h2>
+      <p class="section__aside">
+        藏书 {BOOKS.length} 册 · 已读 {BOOKS.filter((b) => b.status === '已读').length}<br />
+        在读 {BOOKS.filter((b) => b.status === '在读').length} · 待读 {BOOKS.filter((b) => b.status === '待读').length}<br />
+        点书脊查看笔记
+      </p>
+    </div>
+
+    <div class="shelf reveal">
+      {
+        bookRows.map((row, rowIndex) => (
+          <div class="shelf__row">
+            <span class="shelf__label">{rowIndex === 0 ? 'A 架 · 已读 / 在读' : 'B 架 · 待读 / 工具书'}</span>
+            {row.map((book, i) => (
+              <button
+                class="book"
+                type="button"
+                data-book
+                data-title={book.title}
+                data-author={book.author}
+                data-status={book.status}
+                data-quote={book.quote}
+                data-notes={String(book.notes)}
+                data-rating={String(book.rating)}
+                data-category={book.category}
+                data-progress={String('progress' in book ? book.progress : book.status === '已读' ? 100 : 0)}
+                style={`--w:${widths[(rowIndex * 4 + i) % widths.length]};--h:${heights[(rowIndex * 4 + i) % heights.length]};--spine:${spines[(rowIndex * 4 + i) % spines.length]};--spine-ink:${spineInk[(rowIndex * 4 + i) % spineInk.length]}`}
+                aria-label={`${book.title}，${book.author}`}
+              >
+                <span>{book.title}</span>
+                <span class="book__note">
+                  {book.author} · {book.status}
+                  {book.rating ? ` · ${'★'.repeat(book.rating)}` : ''}
+                </span>
+              </button>
+            ))}
+            <span class="shelf__rail" aria-hidden="true"></span>
+          </div>
+        ))
+      }
+    </div>
+
+    <p class="mono reveal" style="margin-top:34px;font-size:9.5px;letter-spacing:.12em;color:var(--text-faint);text-align:right">
+      完整的阅读记录、笔记与摘录在 <a href="/archive" style="color:var(--brass-hi);border-bottom:1px solid currentColor">档案</a>。
+    </p>
+  </section>
+
+  <!-- WORK -->
+  <section class="section" id="work">
+    <div class="section__head reveal">
+      <h2 class="section__title">
+        工坊精选
+        <em>FOUNDRY · DEPLOYED NODES</em>
+      </h2>
+      <p class="section__aside">完整研究树 · 6 个节点<br />已上线 4 · 研究中 2</p>
+    </div>
+
+    <div class="grid-3 reveal">
+      {
+        featured.map((p, i) => (
+          <a class="wcard" href="/foundry">
+            <span class="wcard__no">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="wcard__name">{p.name}</h3>
+            <p class="wcard__en">{p.en}</p>
+            <p class="wcard__desc">{p.desc}</p>
+            <div class="wcard__foot">
+              <span class="chip chip--warm">效率 {p.metric.value}</span>
+              <span class="mono" style="font-size:9px;letter-spacing:.14em;color:var(--text-faint)">{p.year}</span>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+
+    <div class="reveal" style="margin-top:28px;display:flex;gap:12px;flex-wrap:wrap">
+      <a class="btn btn--ghost" href="/foundry">查看完整研究树 <Icon name="arrow" size={12} /></a>
+      <a class="btn btn--ghost" href="/telemetry">查看运行遥测 <Icon name="arrow" size={12} /></a>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section" id="contact">
+    <div class="plate reveal">
+      <div class="plate__body" style="text-align:center;padding:clamp(34px,5vw,74px) clamp(20px,4vw,60px)">
+        <p class="kicker" style="justify-content:center">TRANSMISSION · 联络</p>
+        <p class="display" style="font-size:clamp(30px,4.4vw,58px);margin:22px 0 10px;letter-spacing:.08em">
+          把信号发进来
+        </p>
+        <p class="lead" style="max-width:46ch;margin:0 auto;text-wrap:pretty">
+          合作、提问、或者只是想聊聊渲染管线与极地生存，都可以。回复时间通常在一个供暖周期内。
+        </p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:30px">
+          <a class="btn btn--solid" href={`mailto:${SITE.email}`}><Icon name="mail" size={14} /> 发送邮件</a>
+          <a class="btn" href={SITE.handle} rel="me"><Icon name="github" size={14} /> GitHub</a>
+          <a class="btn btn--ghost" href="/acoustic"><Icon name="sound" size={12} /> 听听这里</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Sheets />
+</BaseLayout>
+
+<style>
+  .wcard {
+    position: relative;
+    display: block;
+    padding: 24px 22px 20px;
+    border: 1px solid var(--line);
+    background: color-mix(in srgb, var(--bg-1) 45%, transparent);
+    transition: border-color var(--t-mid), background-color var(--t-mid), transform var(--t-mid) var(--ease-mech);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%);
+  }
+
+  .wcard::after {
+    content: '';
+    position: absolute;
+    right: 18px;
+    bottom: 18px;
+    width: 26px;
+    height: 1px;
+    background: var(--line-mid);
+    transition: width var(--t-mid) var(--ease-mech), background-color var(--t-mid);
+  }
+
+  .wcard:hover {
+    transform: translateY(-4px);
+    border-color: var(--brass);
+    background: color-mix(in srgb, var(--bg-2) 70%, transparent);
+  }
+
+  .wcard:hover::after {
+    width: 46px;
+    background: var(--brass-hi);
+  }
+
+  .wcard__no {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--brass);
+  }
+
+  .wcard__name {
+    margin-top: 14px;
+    font-family: var(--font-serif);
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--text-strong);
+  }
+
+  .wcard__en {
+    margin-top: 4px;
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.22em;
+    color: var(--text-faint);
+  }
+
+  .wcard__desc {
+    margin-top: 14px;
+    font-size: 12.5px;
+    line-height: 1.85;
+    color: var(--text-dim);
+  }
+
+  .wcard__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 22px;
+  }
+</style>

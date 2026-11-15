@@ -1,0 +1,196 @@
+---
+import Icon from './Icon.astro';
+import { NAV, SITE } from '../data/site';
+
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isActive = (href: string) => (href === '/' ? path === '/' : path === href.replace(/\/$/, ''));
+const current = NAV.find((n) => isActive(n.href));
+---
+
+<header class="hud" id="hud" data-era-hide="false">
+  <a class="hud__brand" href="/" aria-label={`${SITE.title} 首页`}>
+    <svg class="hud__mark" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
+      <path d="M16 1.8 30.2 16 16 30.2 1.8 16z" />
+      <path d="M16 6.4 25.6 16 16 25.6 6.4 16z" opacity=".55" />
+      <circle cx="16" cy="16" r="3.4" fill="currentColor" stroke="none" />
+      <path d="M16 2v4M16 26v4M2 16h4M26 16h4" />
+    </svg>
+    <span class="hud__title">
+      新伦敦
+      <span class="hud__sub">NEW LONDON · TERMINAL 07</span>
+    </span>
+  </a>
+
+  <nav class="hud__nav" aria-label="主导航">
+    {
+      NAV.map((item) => (
+        <a class="hud__link" href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+          <b>{item.label}</b>
+          <i>{item.en}</i>
+        </a>
+      ))
+    }
+  </nav>
+
+  <div class="hud__right">
+    <div class="hud__readout hud__readout--optional">
+      <small>周期 CYCLE</small>
+      <strong>W241</strong>
+    </div>
+    <div class="hud__readout hud__readout--optional">
+      <small>外部温度</small>
+      <strong class="is-cold" id="hud-temp">-30<i>°C</i></strong>
+    </div>
+    <div class="hud__readout">
+      <small>供暖效率</small>
+      <strong class="is-hot">126<i>%</i></strong>
+    </div>
+    <div class="hud__readout">
+      <small>本地时间</small>
+      <strong id="hud-clock">--:--:--</strong>
+    </div>
+
+    <div class="hud__actions">
+      <button class="icon-btn" id="sound-toggle" type="button" aria-pressed="false" aria-label="环境音" title="环境音（程序合成）">
+        <Icon name="sound" />
+      </button>
+      <button class="icon-btn" id="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="打开导航">
+        <Icon name="menu" />
+      </button>
+    </div>
+
+    <button class="era-switch" id="era-switch" type="button" aria-pressed="false" aria-label="切换到 1920 白霜纪元">
+      <span class="era-switch__track" aria-hidden="true"><span class="era-switch__knob"></span></span>
+      <span class="era-switch__label">
+        纪元
+        <b id="era-label">1886</b>
+      </span>
+    </button>
+  </div>
+</header>
+
+<div class="menu" id="mobile-menu" hidden>
+  <div class="menu__head">
+    <span class="menu__title">导航 <em>INDEX</em></span>
+    <button class="icon-btn" id="menu-close" type="button" aria-label="关闭导航"><Icon name="close" /></button>
+  </div>
+  <nav class="menu__list" aria-label="移动端导航">
+    {
+      NAV.map((item, i) => (
+        <a class="menu__item" href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+          <small>{String(i + 1).padStart(2, '0')}</small>
+          <span>{item.label}</span>
+          <em>{item.en}</em>
+        </a>
+      ))
+    }
+  </nav>
+  <div class="menu__foot">
+    <span>{current?.en ?? 'CORE'} · {'{{ domain }}'}</span>
+    <span class="led"></span>
+    <span>在线</span>
+  </div>
+</div>
+
+<style>
+  .menu {
+    position: fixed;
+    inset: var(--hud-h) 0 0 0;
+    z-index: 75;
+    background: color-mix(in srgb, var(--bg-0) 96%, transparent);
+    backdrop-filter: blur(18px);
+    padding: 24px var(--page-x) 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    overflow-y: auto;
+  }
+
+  .menu[hidden] {
+    display: none;
+  }
+
+  @media (min-width: 1081px) {
+    .menu {
+      display: none;
+    }
+    #menu-toggle {
+      display: none;
+    }
+  }
+
+  .menu__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 12px;
+  }
+
+  .menu__title {
+    font-family: var(--font-serif);
+    font-size: 14px;
+    letter-spacing: 0.24em;
+    color: var(--text-strong);
+  }
+
+  .menu__title em {
+    font-family: var(--font-mono);
+    font-style: normal;
+    font-size: 8.5px;
+    letter-spacing: 0.24em;
+    color: var(--text-faint);
+    margin-left: 8px;
+  }
+
+  .menu__list {
+    display: grid;
+  }
+
+  .menu__item {
+    display: grid;
+    grid-template-columns: 34px 1fr auto;
+    align-items: baseline;
+    gap: 12px;
+    padding: 16px 2px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .menu__item small {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--text-faint);
+  }
+
+  .menu__item span {
+    font-family: var(--font-serif);
+    font-size: 19px;
+    letter-spacing: 0.16em;
+    color: var(--text);
+  }
+
+  .menu__item em {
+    font-family: var(--font-mono);
+    font-style: normal;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--text-faint);
+  }
+
+  .menu__item[aria-current='page'] span,
+  .menu__item[aria-current='page'] em {
+    color: var(--brass-hi);
+  }
+
+  .menu__foot {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+  }
+</style>

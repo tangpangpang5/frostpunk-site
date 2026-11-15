@@ -1,0 +1,169 @@
+---
+/** 全局抽屉：书籍详情 / 项目详情。内容由 data-* 在打开时填充。 */
+import Icon from './Icon.astro';
+---
+
+<dialog class="sheet" id="book-sheet" aria-labelledby="book-sheet-title">
+  <div class="sheet__head">
+    <div>
+      <p class="kicker">ARCHIVE · READING RECORD</p>
+      <h2 class="sheet__title" id="book-sheet-title" data-f="title">雪国</h2>
+      <p class="sheet__sub" data-f="author">川端康成</p>
+    </div>
+    <button class="icon-btn" type="button" data-close aria-label="关闭"><Icon name="close" /></button>
+  </div>
+  <div class="sheet__body">
+    <div class="sheet__grid">
+      <div>
+        <p class="sheet__quote" data-f="quote">“穿过县界长长的隧道，便是雪国。”</p>
+        <p class="sheet__label">阅读进度</p>
+        <div class="meter"><i class="meter__fill" data-f="progress" style="width:0%"></i></div>
+      </div>
+      <dl class="sheet__meta">
+        <div><dt>状态</dt><dd data-f="status">已读</dd></div>
+        <div><dt>评分</dt><dd data-f="rating">★★★★★</dd></div>
+        <div><dt>分类</dt><dd data-f="category">文学</dd></div>
+        <div><dt>笔记</dt><dd><span data-f="notes">12</span> 条</dd></div>
+      </dl>
+    </div>
+    <p class="sheet__foot">
+      书架只记录读过的东西，不记录打算读的东西。— <a href="/archive">查看全部档案</a>
+    </p>
+  </div>
+</dialog>
+
+<dialog class="sheet" id="project-sheet" aria-labelledby="project-sheet-title">
+  <div class="sheet__head">
+    <div>
+      <p class="kicker">FOUNDRY · RESEARCH NODE</p>
+      <h2 class="sheet__title" id="project-sheet-title" data-f="name">蒸汽调度台</h2>
+      <p class="sheet__sub"><span data-f="en">GENERATOR DISPATCH</span> · <span data-f="year">2025</span></p>
+    </div>
+    <button class="icon-btn" type="button" data-close aria-label="关闭"><Icon name="close" /></button>
+  </div>
+  <div class="sheet__body">
+    <p class="sheet__quote" data-f="desc"></p>
+    <dl class="sheet__meta sheet__meta--row">
+      <div><dt>效率</dt><dd class="sheet__hot" data-f="metric">126%</dd></div>
+      <div><dt>技术</dt><dd data-f="stack">TypeScript</dd></div>
+      <div><dt>状态</dt><dd><span class="chip" data-f="state">已上线</span></dd></div>
+    </dl>
+    <div class="sheet__actions">
+      <a class="btn btn--solid" data-f="href" href="#"><Icon name="external" size={14} /><span data-f="link">查看项目</span></a>
+      <button class="btn btn--ghost" type="button" data-close>返回研究树</button>
+    </div>
+  </div>
+</dialog>
+
+<style>
+  .sheet__title {
+    font-family: var(--font-serif);
+    font-size: clamp(22px, 2.4vw, 30px);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--text-strong);
+    line-height: 1.25;
+    margin-top: 8px;
+  }
+
+  .sheet__sub {
+    margin-top: 6px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: var(--text-faint);
+  }
+
+  .sheet__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(180px, 1fr);
+    gap: 28px;
+    align-items: start;
+  }
+
+  .sheet__quote {
+    font-family: var(--font-serif);
+    font-size: 16px;
+    line-height: 1.9;
+    color: var(--text);
+    padding-left: 14px;
+    border-left: 1px solid var(--brass);
+    margin-bottom: 22px;
+  }
+
+  .sheet__label {
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    letter-spacing: 0.2em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .sheet__meta {
+    display: grid;
+    gap: 10px;
+  }
+
+  .sheet__meta--row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: 22px;
+  }
+
+  .sheet__meta div {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    border-bottom: 1px dotted var(--line-mid);
+    padding-bottom: 7px;
+  }
+
+  .sheet__meta dt {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+  }
+
+  .sheet__meta dd {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-strong);
+  }
+
+  .sheet__hot {
+    color: var(--brass-hi);
+    font-size: 18px;
+  }
+
+  .sheet__foot {
+    margin-top: 26px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.06em;
+    color: var(--text-faint);
+  }
+
+  .sheet__foot a {
+    color: var(--brass-hi);
+    border-bottom: 1px solid currentColor;
+  }
+
+  .sheet__actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 26px;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 620px) {
+    .sheet__grid,
+    .sheet__meta--row {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

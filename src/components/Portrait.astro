@@ -1,0 +1,131 @@
+---
+/**
+ * 派系徽记：程序生成的黄铜机械印章。
+ * 不做人物肖像——用一枚“工程师秩序”的徽章代替，缩放到任何尺寸都成立。
+ */
+const ticks = Array.from({ length: 60 }, (_, i) => i * 6);
+const teeth = Array.from({ length: 12 }, (_, i) => i * 30);
+---
+
+<svg viewBox="0 0 300 400" role="img" aria-label="派系徽记：工程师秩序的发电机印章">
+  <defs>
+    <linearGradient id="e-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1a2328" />
+      <stop offset="0.6" stop-color="#0c1215" />
+      <stop offset="1" stop-color="#05080a" />
+    </linearGradient>
+    <radialGradient id="e-halo" cx="0.5" cy="0.44" r="0.55">
+      <stop offset="0" stop-color="#ffb066" stop-opacity="0.24" />
+      <stop offset="0.5" stop-color="#c8551d" stop-opacity="0.1" />
+      <stop offset="1" stop-color="#c8551d" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="e-disc" cx="0.42" cy="0.34" r="0.72">
+      <stop offset="0" stop-color="#1d282e" />
+      <stop offset="0.62" stop-color="#0d1418" />
+      <stop offset="1" stop-color="#060a0c" />
+    </radialGradient>
+    <linearGradient id="e-brass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e2bd72" />
+      <stop offset="0.45" stop-color="#a9813c" />
+      <stop offset="1" stop-color="#6b4a22" />
+    </linearGradient>
+    <radialGradient id="e-vig" cx="0.5" cy="0.44" r="0.66">
+      <stop offset="0.42" stop-color="#000" stop-opacity="0" />
+      <stop offset="0.82" stop-color="#000" stop-opacity="0.42" />
+      <stop offset="1" stop-color="#000" stop-opacity="0.9" />
+    </radialGradient>
+    <filter id="e-grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" />
+      <feColorMatrix values="0 0 0 0 0.6 0 0 0 0 0.65 0 0 0 0 0.7 0 0 0 0.35 0" />
+    </filter>
+    <path id="e-arc-top" d="M 52 250 A 98 98 0 0 1 248 250" fill="none" />
+    <path id="e-arc-bot" d="M 74 250 A 76 76 0 0 0 226 250" fill="none" />
+    <clipPath id="e-clip"><rect width="300" height="400" /></clipPath>
+  </defs>
+
+  <g clip-path="url(#e-clip)">
+    <rect width="300" height="400" fill="url(#e-bg)" />
+    <rect width="300" height="400" fill="url(#e-halo)" />
+
+    <!-- 远处烟囱剪影，给徽记一点“城市”的上下文 -->
+    <g fill="#070b0d" opacity="0.5">
+      <path d="M18 400V306h16v-40h10v40h18v94z" />
+      <path d="M238 400V296h14v-34h9v34h21v104z" />
+      <path d="M60 400v-56h10v56zM198 400v-64h9v64z" />
+    </g>
+
+    <g transform="translate(150 196)">
+      <!-- 外圈刻度 -->
+      <g stroke="url(#e-brass)" stroke-width="1" opacity="0.55">
+        {ticks.map((deg) => (
+          <line
+            transform={`rotate(${deg})`}
+            x1="0"
+            y1="-116"
+            x2="0"
+            y2={deg % 30 === 0 ? '-108' : '-112'}
+          />
+        ))}
+      </g>
+      <circle r="118" fill="none" stroke="#8c6239" stroke-width="0.8" opacity="0.5" />
+      <circle r="104" fill="url(#e-disc)" stroke="#3c4b53" stroke-width="1" />
+      <circle r="98" fill="none" stroke="url(#e-brass)" stroke-width="1.4" opacity="0.85" />
+      <circle r="88" fill="none" stroke="#546a74" stroke-width="0.6" stroke-dasharray="2 6" opacity="0.7" />
+
+      <!-- 齿轮环 -->
+      <g fill="none" stroke="url(#e-brass)" stroke-width="6" opacity="0.5">
+        {teeth.map((deg) => (
+          <line transform={`rotate(${deg})`} x1="0" y1="-72" x2="0" y2="-80" stroke-width="9" />
+        ))}
+      </g>
+      <circle r="68" fill="none" stroke="#8c6239" stroke-width="1" opacity="0.6" />
+
+      <!-- 中央菱形 -->
+      <path d="M0-46 46 0 0 46-46 0z" fill="#0a0f12" stroke="url(#e-brass)" stroke-width="1.6" />
+      <path d="M0-34 34 0 0 34-34 0z" fill="none" stroke="#c9a227" stroke-width="0.7" opacity="0.55" />
+
+      <!-- 中心发电机符号 -->
+      <g stroke="#d9b459" stroke-width="1.5" fill="none" opacity="0.95">
+        <circle r="9" />
+        <circle r="3" fill="#d9b459" stroke="none" />
+        <path d="M0-19v6M0 13v6M-19 0h6M13 0h6M-13.4-13.4l4.2 4.2M9.2 9.2l4.2 4.2M13.4-13.4l-4.2 4.2M-9.2 9.2l-4.2 4.2" />
+      </g>
+
+      <!-- 环绕铭文 -->
+      <text
+        font-family="Oswald, sans-serif"
+        font-size="8"
+        letter-spacing="4.2"
+        fill="#c9a227"
+        opacity="0.8"
+      >
+        <textPath href="#e-arc-top" startOffset="50%" text-anchor="middle">THE ENGINEERS · ORDER OF THE GENERATOR</textPath>
+      </text>
+      <text
+        font-family="Oswald, sans-serif"
+        font-size="7"
+        letter-spacing="3.4"
+        fill="#8ba0ab"
+        opacity="0.7"
+      >
+        <textPath href="#e-arc-bot" startOffset="50%" text-anchor="middle">ANNO 1886 · TERMINAL 07</textPath>
+      </text>
+
+      <!-- 左右铆钉 -->
+      <circle cx="-104" cy="0" r="3" fill="#596a74" stroke="#05080a" stroke-width="0.7" />
+      <circle cx="104" cy="0" r="3" fill="#596a74" stroke="#05080a" stroke-width="0.7" />
+    </g>
+
+    <!-- 雪粒 -->
+    <g fill="#dbe8ee" opacity="0.5">
+      {Array.from({ length: 30 }, (_, i) => {
+        const x = 6 + ((i * 47.3) % 288);
+        const y = 6 + ((i * 71.9) % 300);
+        return <circle cx={x} cy={y} r={i % 6 === 0 ? 1.2 : 0.7} opacity={0.18 + ((i % 4) / 9)} />;
+      })}
+    </g>
+
+    <rect width="300" height="400" fill="url(#e-vig)" />
+    <rect width="300" height="400" filter="url(#e-grain)" opacity="0.2" />
+  </g>
+</svg>

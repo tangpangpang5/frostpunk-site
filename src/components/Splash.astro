@@ -1,0 +1,64 @@
+---
+/** 启动画面：三阶段（死寂 → 增压点火 → 闸门开启）。每个会话只播一次。 */
+---
+
+<div class="splash" id="splash" role="presentation">
+  <div class="splash__inner">
+    <div class="splash__gears" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1">
+        <circle cx="12" cy="12" r="3" />
+        <path d="M12 2.4v3M12 18.6v3M21.6 12h-3M5.4 12h-3M18.8 5.2l-2.1 2.1M7.3 16.7l-2.1 2.1M18.8 18.8l-2.1-2.1M7.3 7.3 5.2 5.2" />
+      </svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+        <circle cx="12" cy="12" r="3.4" />
+        <path d="M12 3.2v2.4M12 18.4v2.4M20.8 12h-2.4M5.6 12H3.2M18.2 5.8l-1.7 1.7M7.5 16.5l-1.7 1.7M18.2 18.2l-1.7-1.7M7.5 7.5 5.8 5.8" />
+      </svg>
+    </div>
+
+    <p class="splash__eyebrow">TERMINAL 07 · NEW LONDON · PERSONAL ARCHIVE</p>
+    <h1 class="splash__word">新伦敦</h1>
+    <p class="splash__sub">NEW LONDON</p>
+
+    <div class="splash__bar" aria-hidden="true"><i></i></div>
+    <div class="splash__readout">
+      <span>PRESSURE 0.00</span>
+      <span id="splash-status">点火中 · IGNITION</span>
+      <span>BOILER 02</span>
+    </div>
+    <p class="splash__hint">点击任意处跳过 · CLICK TO SKIP</p>
+  </div>
+</div>
+
+<script>
+  const splash = document.getElementById('splash');
+  if (splash) {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let done = false;
+
+    const finish = () => {
+      if (done) return;
+      done = true;
+      splash.classList.add('is-done');
+      try {
+        sessionStorage.setItem('nl-splash', '1');
+      } catch {
+        /* 隐私模式下忽略 */
+      }
+      window.setTimeout(() => splash.remove(), 1000);
+    };
+
+    const timer = window.setTimeout(finish, reduced ? 300 : 3600);
+    document.addEventListener(
+      'keydown',
+      () => {
+        window.clearTimeout(timer);
+        finish();
+      },
+      { once: true },
+    );
+    splash.addEventListener('click', () => {
+      window.clearTimeout(timer);
+      finish();
+    });
+  }
+</script>

@@ -1,0 +1,161 @@
+/* ==========================================================================
+   FROSTPUNK PERSONAL SITE — design tokens
+   双纪元：1886（煤炭暗黑） / 1920（白霜现代）
+   语义变量在 [data-era] 上切换；HUD 永远保持冷钢黑，作为“机器”本身。
+   ========================================================================== */
+
+:root {
+  /* ---- typography ------------------------------------------------------ */
+  --font-display: 'Oswald', 'Noto Serif SC', 'Source Han Serif SC', 'SimSun', serif;
+  --font-serif: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'SimSun', serif;
+  --font-mono: 'JetBrains Mono', 'Cascadia Mono', 'Consolas', monospace;
+  --font-sans: 'Noto Serif SC', 'Source Han Serif SC', 'Microsoft YaHei', sans-serif;
+
+  --fs-micro: 10px;
+  --fs-label: 11px;
+  --fs-sm: 13px;
+  --fs-body: 15px;
+  --fs-lead: 17px;
+  --fs-h4: 20px;
+  --fs-h3: 28px;
+  --fs-h2: clamp(34px, 3.4vw, 54px);
+  --fs-h1: clamp(48px, 6.4vw, 104px);
+  --fs-hero: clamp(72px, 11vw, 176px);
+
+  --track-wide: 0.22em;
+  --track-mid: 0.12em;
+  --track-tight: 0.04em;
+
+  /* ---- geometry -------------------------------------------------------- */
+  --hud-h: 58px;
+  --rail-w: 74px;
+  --page-x: clamp(20px, 3.4vw, 64px);
+  --page-max: 1500px;
+  --chamfer: 12px;
+  --hair: 1px;
+
+  /* ---- motion ---------------------------------------------------------- */
+  --ease-mech: cubic-bezier(0.62, 0.02, 0.2, 1);
+  --ease-gate: cubic-bezier(0.7, 0, 0.2, 1);
+  --t-fast: 160ms;
+  --t-mid: 320ms;
+  --t-slow: 720ms;
+
+  /* ---- HUD（两纪元共用） ------------------------------------------------ */
+  --hud-bg: #0a0d0f;
+  --hud-bg-2: #12181c;
+  --hud-line: rgba(165, 196, 212, 0.16);
+  --hud-text: #c6d5dd;
+  --hud-dim: #6d818d;
+  --hud-gold: #c9a227;
+
+  /* ---- 通用警示 -------------------------------------------------------- */
+  --alert: #e63946;
+  --alert-deep: #8f1d26;
+  --ember: #d96b27;
+  --gold: #c9a227;
+
+  /* ---- 切角形状 -------------------------------------------------------- */
+  --clip-chamfer: polygon(
+    var(--chamfer) 0,
+    calc(100% - var(--chamfer)) 0,
+    100% var(--chamfer),
+    100% calc(100% - var(--chamfer)),
+    calc(100% - var(--chamfer)) 100%,
+    var(--chamfer) 100%,
+    0 calc(100% - var(--chamfer)),
+    0 var(--chamfer)
+  );
+  --clip-tab: polygon(0 0, 100% 0, calc(100% - 22px) 100%, 22px 100%);
+  --clip-shard: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+}
+
+/* ==========================================================================
+   1886 — 煤炭、黄铜、维多利亚内凹切角
+   ========================================================================== */
+[data-era='1886'] {
+  color-scheme: dark;
+
+  --bg-0: #080b0d;
+  --bg-1: #0f1418;
+  --bg-2: #161e24;
+  --bg-3: #1d272e;
+  --surface: rgba(18, 24, 29, 0.82);
+  --surface-solid: #121a20;
+
+  --text: #cfdae1;
+  --text-strong: #f0f5f7;
+  --text-dim: #93a9b5;
+  --text-faint: #6a7d88;
+
+  --line: rgba(165, 196, 212, 0.16);
+  --line-mid: rgba(165, 196, 212, 0.3);
+  --line-strong: #4a6b7c;
+  --brass: #8c6239;
+  --brass-hi: #c99a5b;
+  --accent: #d96b27;
+  --accent-soft: rgba(217, 107, 39, 0.16);
+  --cyan: #6fb6c9;
+  --cyan-soft: rgba(111, 182, 201, 0.18);
+
+  --shadow-hard: 5px 5px 0 rgba(0, 0, 0, 0.55);
+  --glow-warm: 0 0 42px rgba(217, 107, 39, 0.28);
+  --noise-opacity: 0.04;
+  --frost-opacity: 0.08;
+  --panel-radius: 0px;
+  --ink: #000;
+}
+
+/* ==========================================================================
+   1920 — 白霜磨砂纸、极细线、暖金
+   ========================================================================== */
+[data-era='1920'] {
+  color-scheme: light;
+
+  --bg-0: #dfe4e4;
+  --bg-1: #e9edee;
+  --bg-2: #f3f5f5;
+  --bg-3: #ffffff;
+  --surface: rgba(252, 253, 253, 0.72);
+  --surface-solid: #f4f6f6;
+
+  --text: #232b2f;
+  --text-strong: #0d1214;
+  --text-dim: #64747b;
+  --text-faint: #98a6ac;
+
+  --line: rgba(24, 34, 39, 0.14);
+  --line-mid: rgba(24, 34, 39, 0.28);
+  --line-strong: #7d9199;
+  --brass: #a9813c;
+  --brass-hi: #d9a441;
+  --accent: #b8562a;
+  --accent-soft: rgba(184, 86, 42, 0.12);
+  --cyan: #2f9a94;
+  --cyan-soft: rgba(47, 154, 148, 0.14);
+
+  --shadow-hard: 4px 4px 0 rgba(33, 45, 51, 0.12);
+  --glow-warm: 0 0 40px rgba(217, 164, 65, 0.22);
+  --noise-opacity: 0.035;
+  --frost-opacity: 0.22;
+  --panel-radius: 0px;
+  --ink: #0b0f11;
+}
+
+/* 强制降级：任何动效只剩瞬时状态 */
+[data-motion='reduced'] *,
+[data-motion='reduced'] *::before,
+[data-motion='reduced'] *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --t-fast: 1ms;
+    --t-mid: 1ms;
+    --t-slow: 1ms;
+  }
+}
